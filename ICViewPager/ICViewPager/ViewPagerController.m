@@ -22,6 +22,7 @@
 #define kFixFormerTabsPositions 0.0
 #define kFixLatterTabsPositions 0.0
 #define kYOffset 0.0
+#define kTopLayoutGuide 0.0
 
 #define kIndicatorColor [UIColor colorWithRed:178.0/255.0 green:203.0/255.0 blue:57.0/255.0 alpha:0.75]
 #define kTabsViewBackgroundColor [UIColor colorWithRed:234.0/255.0 green:234.0/255.0 blue:234.0/255.0 alpha:0.75]
@@ -203,12 +204,16 @@
 
 - (void)layoutSubviews {
     
-    CGFloat topLayoutGuide = 0.0;
-    if (IOS_VERSION_7) {
-        topLayoutGuide = 20.0;
-        if (self.navigationController && !self.navigationController.navigationBarHidden) {
-            topLayoutGuide += self.navigationController.navigationBar.frame.size.height;
-        }
+    CGFloat topLayoutGuide = kTopLayoutGuide;
+//    if (IOS_VERSION_7) {
+//        topLayoutGuide = 20.0;
+//        if (self.navigationController && !self.navigationController.navigationBarHidden) {
+//            topLayoutGuide += self.navigationController.navigationBar.frame.size.height;
+//        }
+//    }
+    
+    if ([self.delegate respondsToSelector:@selector(viewPager:valueForOption:withDefault:)]) {
+        topLayoutGuide = [self.delegate viewPager:self valueForOption:ViewPagerOptionTopLayoutGuide withDefault:topLayoutGuide];
     }
     
     CGFloat yOffset = kYOffset;
